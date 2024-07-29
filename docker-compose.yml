@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  parser:
+    build:
+      context: .
+      dockerfile: /bot/Dockerfile
+    environment:
+      - API_ID=${API_ID}
+      - API_HASH=${API_HASH}
+      - PHONE_NUMBER=${PHONE_NUMBER}
+    volumes:
+      - ./messages.db:/app/messages.db
+
+  bot:
+    build:
+      context: .
+      dockerfile: parser/Dockerfile
+    environment:
+      - API_ID=${API_ID}
+      - API_HASH=${API_HASH}
+      - API_TOKEN_BOT=${API_TOKEN_BOT}
+    volumes:
+      - ./messages.db:/app/messages.db
+    ports:
+      - "8080:8080"
